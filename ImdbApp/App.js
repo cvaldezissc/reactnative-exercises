@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import { Text } from 'react-native';
 import Home from './src/components/container_components/home';
 import Header from './src/components/function_components/header';
-
+import SuggestionList from './src/components/container_components/suggestion-list';
 
 export default class App extends Component {
   render() {
@@ -20,7 +20,7 @@ export default class App extends Component {
 
         <Text >Searcher</Text>
         <Text >Categories</Text>
-        <Text >Suggestions</Text>
+        <SuggestionList />
       
       </Home>
       
