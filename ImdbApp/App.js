@@ -12,7 +12,12 @@ import SuggestionList from './src/components/container_components/suggestion-lis
 import CategoryList from './src/components/container_components/category-list';
 import API from './src/utils/api';
 import Player from './src/components/widgets/container/player';
+import {Provider} from 'react-redux';
+import Loading from './src/components/function_components/loading';
 
+
+import {PersistGate} from 'redux-persist/integration/react'
+import {store, persistor} from './src/store/store';
 
 
 export default class App extends Component {
@@ -26,41 +31,52 @@ export default class App extends Component {
 
 
   async componentDidMount(){
-    const variable = await API.getSuggestions(10);
-    const categories = await API.getMovies();
+    const movieList = await API.getSuggestions(10);
+    initialStore.dispatch({
+      type: 'GET_MOVIES_LIST',
+      payload: {listOfMovies: movieList}
+    });
 
-    console.log(categories);
 
-    this.setState({
-      suggestionList: variable,
-      categoriesList: categories
-    })
+
+    const categoryList = await API.getMovies();
+    initialStore.dispatch({
+      type: 'GET_CATEGORIES_LIST',
+      payload: {listOfCategories: categoryList}
+    });
+
   }
   
   render() {
     return (
 
-      <Home>
 
-        <Header />
-        <Player />
+      <Provider
+        store = {store}
+      >
+
+      <PersistGate
+        loading={<Loading />}
+        persistor={persistor}
+      >
+        <Home>
+
+          <Header />
+          <Player />
 
 
+          <Text >Searcher</Text>
 
 
-        <Text >Searcher</Text>
-        <Text >Categories</Text>
+          <CategoryList />
 
-
-        <CategoryList 
-          list={this.state.categoriesList}
-        />
-
-        <SuggestionList 
-          list={this.state.suggestionList}
-        />
+          <SuggestionList />
+        
+        </Home>
+        
+        </PersistGate>
+      </Provider>
       
-      </Home>
       
     );
   }

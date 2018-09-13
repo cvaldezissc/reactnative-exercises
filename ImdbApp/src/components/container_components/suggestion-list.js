@@ -4,9 +4,9 @@ import Layout from '../function_components/suggestion-list-layout';
 import Empty from '../function_components/empty';
 import VerticalSeparator from '../function_components/vertical-separator';
 import SuggestionItem from '../function_components/suggestion-item';
+import { connect } from 'react-redux';
 
-
-export default class SuggestionList extends Component {
+class SuggestionList extends Component {
 
 
   baseList = [
@@ -34,7 +34,7 @@ export default class SuggestionList extends Component {
       <Layout title="Suggestions 4 you">
         <FlatList 
           keyExtractor={this.keyExtractor}
-          data={this.props.list}
+          data={this.props.obtainedListOfSuggestions}
           renderItem={ this.renderItem }
           ListEmptyComponent={this.renderEmpty}
           ItemSeparatorComponent={this.renderSeparator}
@@ -48,3 +48,12 @@ export default class SuggestionList extends Component {
 const styles = StyleSheet.create({
 
 });
+
+
+function mapStateToProps(state){
+  return {
+    obtainedListOfSuggestions: state.listOfMovies
+  }
+}
+
+export default connect(mapStateToProps)(SuggestionList);

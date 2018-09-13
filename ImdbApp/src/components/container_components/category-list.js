@@ -4,9 +4,10 @@ import Layout from '../function_components/category-list-layout';
 import Empty from '../function_components/empty';
 import HorizontalSeparator from '../function_components/horizontal-separator';
 import CategoryItem from '../function_components/category-item';
+import { connect } from 'react-redux';
 
 
-export default class CategoryList extends Component {
+class CategoryList extends Component {
 
     keyExtractor =(item) => item.id.toString();
     renderEmpty = ()=> <Empty emptyText="There are no categories" />
@@ -25,7 +26,7 @@ export default class CategoryList extends Component {
                 <FlatList 
                     horizontal={true}
                     keyExtractor={this.keyExtractor}
-                    data={this.props.list}
+                    data={this.props.obtainedListOfCategories}
                     renderItem={ this.renderItem }
                     ListEmptyComponent={this.renderEmpty}
                     ItemSeparatorComponent={this.renderSeparator}
@@ -37,6 +38,12 @@ export default class CategoryList extends Component {
 }
 
 
-const styles = StyleSheet.create({
+function mapStateToProps(state){
+    //debugger;
+    return {
+        obtainedListOfCategories: state.listOfCategories
+    }
+}
 
-});
+
+export default connect(mapStateToProps)(CategoryList);
